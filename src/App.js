@@ -16,7 +16,7 @@ import { HDRCubeTextureLoader } from 'three/examples/jsm/loaders/HDRCubeTextureL
 import './styles.css';
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { Html, useGLTF, useTexture, Stars } from '@react-three/drei';
+import { Html, useGLTF, useTexture, Stars, Sky,  } from '@react-three/drei';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import VirtualScroll from 'virtual-scroll';
 import { attackData } from "./data";
@@ -66,6 +66,11 @@ function Dolly() {
 
     camera.position.y = -ypos/1000;
 
+    if (Math.abs(ypos/1000) > 15) {
+      document.getElementsByClassName("instrcution")[0].style.height = "0";
+      document.getElementsByClassName("instrcution")[0].style.opacity = "0";
+      document.getElementsByClassName("instrcution")[0].style.overflow = "hidden";
+    }
     // camera.position.x = -15+Math.cos((ypos)/1300+0.9)*5;
     // camera.position.x = Math.cos(ypos/2000);
 
@@ -190,15 +195,19 @@ class App extends React.Component {
           <div>{this.renderModal()}</div>
         </Modal>
         <header className="header">
-          <h3>Anti-Asia Attack Cases</h3>
+          <h1>Anti-Asia Attack Cases</h1>
+          <h4>Anti-Asian Racism and Discrimination did not start with Covid-19</h4>
           <div>Case Data Credit: <a href="https://www.nytimes.com/interactive/2021/04/03/us/anti-asian-attacks.html">New York Times</a></div>
         </header>
         <Canvas camera={{ position: [r, 0, 0], fov: 69 }}>
           <CameraControls />
-          <color attach="background" args={["#abe0c2"]} />
+          <color attach="background" args={["#4B453C"]} />
+          <Sky />
           <Stars />
-          <ambientLight color = {0xffffff} intensity={0.1} />
+          <ambientLight color = {0xffffff} intensity={0.3} />
           <spotLight position={[50, 75, 50]} angle={0.30} penumbra={1} />
+          <spotLight position={[0, 75, 50]} angle={0.30} penumbra={1} />
+          <spotLight position={[0, 75, 0]} angle={0.30} penumbra={1} />
           {this.createTable()}
           <Dolly />
         </Canvas>

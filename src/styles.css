@@ -14,6 +14,11 @@ body,
 body {
   background: white;
   font-family: archer;
+  color: white;
+}
+
+a {
+  color: white;
 }
 
 .wrapper{
@@ -35,7 +40,7 @@ header{
   z-index: 2;
   width: 100%;
   height: 100%;
-  background-color: #ffffffc7;
+  background-color: #0000009c;
   padding: 120px 160px;
 }
 .modal-style > p, .modal-style > a {
@@ -58,10 +63,12 @@ hr.solid {
   top: 3em;
   background-color: #ffffff00;
   border: none;
+  color: white;
 }
 .react-responsive-modal-closeButton > svg {
   width: 48px;
   height: 48px;
+  fill: white;
 }
 .react-responsive-modal-closeButton > svg:hover{
   border: none;
@@ -70,11 +77,14 @@ hr.solid {
 
 .instrcution {
   position: absolute;
+  opacity: 1;
+  height: auto;
   bottom: 2em;
   z-index: 1;
   left: 50vw;
   color: #0000009e;
   text-align: center;
+  transition: opacity 3s ease-out;
 }
 
 Canvas {

@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+SI579 Final Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Chen Chen
 
-## Available Scripts
+**Notes:**
 
-In the project directory, you can run:
+Please open [the website](https://e477n.studio/react-gh-pages/index.html) using Chrome, Safari is not supported.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Project Topic
 
-### `npm test`
+**Anti-Asian attack cases**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Use interactive 3d object to engage audiences. They can view individual reported cases thus arise awareness of the current situation. 
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Functions
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- enter the scene and change camera position through scrolling
+- click in each mesh to view corresponding attack cases
+- go to external website to view more details
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Used Libraries
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- react three fiber
+- react three drei
+- three.js (to extend when components not available through react three fiber)
+- virtual-scroll
+- react bootstrap
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Library Introduction
 
-## Learn More
+### Three.js
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- a 3D library that tries to make it as easy as possible to get 3D content on a webpage
+- uses WebGL to draw 3D
+- handles stuff like scenes, lights, shadows, materials, textures, 3d math
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Structure of a Three.js app
 
-### Code Splitting
+an app = Scene + Camera + Renderer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Scene = Mesh + Light + other objects
 
-### Analyzing the Bundle Size
+Mesh = Geometry + Material
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Texture can be applied to Material
 
-### Making a Progressive Web App
+![](./materials/threejs-structure.svg)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+##### Frustum: to determine what is inside the camera's field of view.
 
-### Advanced Configuration
+- keep near and far in a sensible range for your scene
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![](./materials/1.jpeg)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+##### Objects visible in a Three.js scene
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- mesh
+- line segments
+- particles
+
+
+
+#### Geometry
+
+```
+var cubeGeometry = new THREE.CubeGeometry(20, 20, 20, 2, 2, 2);
+```
+
+(Width, height, depth, width segments to 2, .., ..)
+
+![](./materials/2.jpeg)
+
+#### Materials
+
+- The [`MeshBasicMaterial`](https://threejs.org/docs/#api/en/materials/MeshBasicMaterial) is not affected by lights. 
+  - roughness 0 to 1
+  - metalness from 0 to 1
+
+- The [`MeshLambertMaterial`](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) computes lighting only at the vertices 
+
+- the [`MeshPhongMaterial`](https://threejs.org/docs/#api/en/materials/MeshPhongMaterial) which computes lighting at every pixel
+
+![](./materials/material.png)
+
+
+
+#### Lights
+
+- PointLight
+- AmbientLight
+- DirectionalLight
+
+
+
+#### Loaders
+
+- import external 3D models into the app
+
+- GLTFLoader.load(url, onload, onProgress, onError)
+  - const loader = new GLTFLoader();
+  - loader.load(url, onload function)
+
+- Supported 3d file formats: gltf, glb, obj, fbx, 3ds, ...
+
+
+
+#### Reference
+
+- https://threejsfundamentals.org/threejs/lessons/threejs-fundamentals.html
+- https://threejsfundamentals.org/threejs/lessons/threejs-materials.html
+- https://threejs.org/docs/#examples/en/loaders/GLTFLoader
+
+
+
+### React Three Fiber
+
+a powerful Three.js renderer that helps render 3D models and animations for React and its native applications
+
+- component based scene
+- Built-in hooks
+  - useFrame: attach functions into requestAnimationFrame()
+  - useThree: get useful objects like renderer, scene, camera
+
+
+
+#### Basic terms
+
+1. **Canvas**: The canvas object is used to draw graphics on your scene. It is similar to a real canvas which is used to draw paintings on. It only renders Three.js elements and not DOM elements.
+2. **Scene**: It's just like in a movie with actors, actresses and environments on a single screen, but not bounded by time frames, it holds all 3D objects on the screen.
+3. **Camera**: A viewer that allows you to look at all surroundings and objects in the scene.
+4. **Object3d**: Most of the things like the camera, scenes, mesh, lights etc. are derived from this base class in Three.js. This class provides a set of properties and methods for manipulating objects in the 3D space.
+
+![](./materials/fiber.png)
+
+#### reference
+
+- https://geekyants.com/blog/introduction-to-react-three-fiber
+
+
+
+### Virtual Scroll
+
+- "Zoom" by scrolling
+  - Zooming: changing the field of view
+  - **Dollying: moving the camera forwards and backwards**
+
+- create custom scrollers with touch and keyboard support
+
+  - Use method instance.on(callback, context) to get
+
+    - ```
+      y, // total distance scrolled on the y axis
+      ```
+
+  - change the camera position in useFrame()
+
+#### Reference
+
+- https://www.npmjs.com/package/virtual-scroll
+
+
+
+
+
+## Useful Resources
+
+1. React Three Fiber official https://github.com/pmndrs/react-three-fiber
+2. Three.js https://threejs.org
+3. Youtube channel Yuri Artyukh https://www.youtube.com/channel/UCDo7RTzizoOdPjY8A-xDR7g
+
+![](./materials/three.png)
